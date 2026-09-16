@@ -1,11 +1,21 @@
-# DEVELOPMENT
+# ACCEPTANCE CRITERIA
 
-## Local workflow
-1. Install dependencies using npm install.
-2. Run the dev server with npm run dev.
-3. Build with npm run build.
-4. Verify with npm test and npm run lint.
+## Phase 0 foundation
 
-## Notes
-- This foundation is intentionally constrained to a safe, static app shell.
-- The automation and policy systems are implemented as an explicit UI/logic scaffold, not as arbitrary runtime code execution.
+- [x] Repository initialized with real project files
+- [x] Vite + React + TypeScript app shell present
+- [x] PWA manifest and service worker included
+- [x] JARVIS-style HUD shell present
+- [x] Automation panel shell present
+- [x] Policy Engine scaffold present
+- [x] Offline fallback present
+- [x] Initial UI and Policy Engine tests authored
+- [ ] Dependencies installed and tests executed
+- [ ] TypeScript compile verified
+- [ ] Production build verified
+
+## Not yet accepted
+
+- Voice reactivity requires real `MediaStream` + `AnalyserNode` evidence.
+- Automation requires persistence, verification, audit, and rollback evidence.
+- Builder E2E requires real workspace creation, checks, tests, preview, patch, and retest evidence.

@@ -1,10 +1,16 @@
-# ACCEPTANCE CRITERIA
+import { describe, expect, it } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import App from './App';
 
-- Repo initialized with real project files
-- Vite + React + TypeScript app shell present
-- PWA manifest and service worker included
-- JARVIS-style HUD visible in the app
-- Automation panel available and functional
-- Policy Engine enforcement present
-- Offline fallback available
-- Full build and test verification pending terminal access
+describe('HADES foundation UI', () => {
+  it('renders the HADES shell and automation panel', () => {
+    render(<App />);
+    expect(screen.getByText('HADES')).toBeTruthy();
+    expect(screen.getByText('Problemas detectados')).toBeTruthy();
+  });
+
+  it('starts with microphone listening disabled', () => {
+    render(<App />);
+    expect(screen.getByRole('button', { name: 'Micrófono inactivo' })).toBeTruthy();
+  });
+});

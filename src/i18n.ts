@@ -1,54 +1,5 @@
-export type Patch = {
-  patch_id: string;
-  created_at: string;
-  reason: string;
-  severity: 'CRITICAL' | 'ERROR' | 'WARNING' | 'INFO';
-  affected_modules: string[];
-  diff: {
-    file: string;
-    oldCode: string;
-    newCode: string;
-  }[];
-  requires_confirmation: boolean;
-  risk_level: 'LOW' | 'MEDIUM' | 'HIGH';
-  test_plan: string[];
-  rollback_available: boolean;
-};
-
-export type Issue = {
-  id: string;
-  title: string;
-  severity: 'CRITICAL' | 'ERROR' | 'WARNING' | 'INFO';
-  summary: string;
-  module: string;
-};
-
-export function buildPatch(issue: Issue): Patch {
-  return {
-    patch_id: `patch-${issue.id}`,
-    created_at: new Date().toISOString(),
-    reason: `Resolve ${issue.title.toLowerCase()} in ${issue.module}.`,
-    severity: issue.severity,
-    affected_modules: [issue.module, 'automation'],
-    diff: [
-      {
-        file: 'src/lib/automation.ts',
-        oldCode: 'const pending = true;\nreturn issue;\n',
-        newCode: 'const pending = false;\nreturn issue;\n',
-      }
-    ],
-    requires_confirmation: true,
-    risk_level: issue.severity === 'CRITICAL' ? 'HIGH' : 'MEDIUM',
-    test_plan: ['smoke-check', 'state-inspector', 'render-check'],
-    rollback_available: true
-  };
-}
-
-export function getDefaultPolicyResult() {
-  return {
-    allowed: true,
-    reason: 'Default policy: local scope on app internals only.',
-    scope: 'approved',
-    authorizationLevel: 'L1'
-  };
-}
+export type Language = 'es' | 'en';
+export const translations = {
+  es: { title: 'HADES', infoButtonLabel: 'Información del sistema', languageLabel: 'Cambiar idioma', systemStatus: 'Estado del sistema', systemReady: 'READY', policy: 'Policy', activity: 'Actividad', listening: 'LISTENING', listeningOn: 'LISTENING ON', listeningOff: 'LISTENING OFF', idle: 'IDLE', detectedIssues: 'Problemas detectados', module: 'Módulo', patchPreview: 'Vista previa del parche', applyPatch: 'Aplicar parche', proposeFix: 'Proponer corrección', liveLogs: 'Logs en vivo', navigationLabel: 'Navegación principal', clockLabel: 'Reloj y temporizador', exportLabel: 'Exportar', settingsLabel: 'Configuración', securityLabel: 'Seguridad', helpLabel: 'Ayuda', micOn: 'Micrófono activo', micOff: 'Micrófono inactivo', avatarLabel: 'Núcleo holográfico', collapse: 'Colapsar', expand: 'Expandir', confirmPatch: 'El parche requiere confirmación explícita. ¿Deseas continuar?' },
+  en: { title: 'HADES', infoButtonLabel: 'System information', languageLabel: 'Change language', systemStatus: 'System status', systemReady: 'READY', policy: 'Policy', activity: 'Activity', listening: 'LISTENING', listeningOn: 'LISTENING ON', listeningOff: 'LISTENING OFF', idle: 'IDLE', detectedIssues: 'Detected issues', module: 'Module', patchPreview: 'Patch preview', applyPatch: 'Apply patch', proposeFix: 'Propose fix', liveLogs: 'Live logs', navigationLabel: 'Main navigation', clockLabel: 'Clock and timer', exportLabel: 'Export', settingsLabel: 'Settings', securityLabel: 'Security', helpLabel: 'Help', micOn: 'Microphone on', micOff: 'Microphone off', avatarLabel: 'Holographic core', collapse: 'Collapse', expand: 'Expand', confirmPatch: 'This patch requires explicit confirmation. Continue?' }
+} as const;

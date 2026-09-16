@@ -1,49 +1,50 @@
-export type PolicyDecision = {
-  allowed: boolean;
-  reason: string;
-  scope: string;
-  authorizationLevel: 'L1' | 'L2' | 'L3' | 'L4';
+export type Severity = 'CRITICAL' | 'ERROR' | 'WARNING' | 'INFO';
+
+export type Issue = {
+  id: string;
+  title: string;
+  severity: Severity;
+  summary: string;
+  module: string;
 };
 
-export function checkPolicy(
-  tool: string,
-  destination: string,
-  options: { risk: 'LOW' | 'MEDIUM' | 'HIGH'; requiresConfirmation: boolean }
-): PolicyDecision {
-  const isAllowedDestination = destination.startsWith('app://') || destination.startsWith('local://');
-  const isSafeTool = tool !== 'eval_any_code' && tool !== 'execute_arbitrary_js' && tool !== 'fetch_any_url';
+export type Patch = {
+  patch_id: string;
+  created_at: string;
+  reason: string;
+  severity: Severity;
+  affected_modules: string[];
+  diff: {
+    file: string;
+    oldCode: string;
+    newCode: string;
+  }[];
+  requires_confirmation: boolean;
+  risk_level: 'LOW' | 'MEDIUM' | 'HIGH';
+  test_plan: string[];
+  rollback_available: boolean;
+  applied_at?: string;
+  status?: 'PENDING_VERIFICATION' | 'STABLE' | 'REVERTED';
+};
 
-  if (!isSafeTool) {
-    return {
-      allowed: false,
-      reason: 'Prohibited tool blocked by Policy Engine.',
-      scope: 'deny',
-      authorizationLevel: 'L4'
-    };
-  }
-
-  if (!isAllowedDestination) {
-    return {
-      allowed: false,
-      reason: 'Remote or unapproved destination is outside the allowlist.',
-      scope: 'deny',
-      authorizationLevel: 'L4'
-    };
-  }
-
-  if (options.risk === 'HIGH' || options.requiresConfirmation) {
-    return {
-      allowed: true,
-      reason: 'Authorization requires explicit confirmation before execution.',
-      scope: 'restricted',
-      authorizationLevel: 'L3'
-    };
-  }
-
+export function buildPatch(issue: Issue): Patch {
   return {
-    allowed: true,
-    reason: 'Tool is within scope and safe to execute.',
-    scope: 'approved',
-    authorizationLevel: 'L1'
+    patch_id: `patch-${issue.id}`,
+    created_at: new Date().toISOString(),
+    reason: `Resolve ${issue.title.toLowerCase()} in ${issue.module}.`,
+    severity: issue.severity,
+    affected_modules: [issue.module],
+    diff: [
+      {
+        file: `workspace/${issue.module}/diagnostic.txt`,
+        oldCode: 'status: pending\n',
+        newCode: 'status: reviewed\n'
+      }
+    ],
+    requires_confirmation: true,
+    risk_level: issue.severity === 'CRITICAL' ? 'HIGH' : 'MEDIUM',
+    test_plan: ['smoke-check', 'state-inspector', 'render-check'],
+    rollback_available: true,
+    status: 'PENDING_VERIFICATION'
   };
 }

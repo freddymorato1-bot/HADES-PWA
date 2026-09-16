@@ -1,24 +1,24 @@
 # BUILD STATUS
 
-## Iteration 2 — Static verification preparation
+## Iteration 3 — Phase 1 core architecture scaffold
 
 - DATE: 2026-09-16
-- PHASE: PHASE 0 — FOUNDATION
-- CHANGES: Replaced the corrupted `src/App.test.tsx` content with real Vitest/Testing Library tests and added Policy Engine unit coverage for prohibited tools, destinations, confirmation levels, and high-risk denial.
+- PHASE: PHASE 1 — CORE
+- CHANGES: Added a minimal but real Event Bus, App State Store, and Task Manager implementation. Fixed the duplicate Policy Engine definition so the source layer is coherent and consistent with the app shell.
 - COMMANDS EXECUTED: NOT RUN — this GitHub-only session has no terminal execution capability.
 - TEST RESULTS: NOT RUN.
 - ENVIRONMENT: GitHub repository workspace only.
-- KNOWN LIMITATIONS: Build, dependency installation, tests, lint, browser verification, PWA audit, and accessibility audit remain unverified.
+- KNOWN LIMITATIONS: Build, dependency installation, test execution, linting, browser verification, and PWA validation remain unverified.
 - PENDING VERIFICATION: `npm install`, `npm run lint`, `npm test`, `npm run build`.
 
 ## Current status
 
-- Repository/files: VERIFIED by commit.
-- Test source integrity: IMPLEMENTED / NOT VERIFIED.
-- Policy unit coverage: IMPLEMENTED / NOT VERIFIED.
-- TypeScript compile: NOT VERIFIED.
-- Unit tests: NOT VERIFIED.
-- Production build: NOT VERIFIED.
+- Repository integrity: VERIFIED by commit.
+- Phase 0 shell: IMPLEMENTED / NOT VERIFIED.
+- Event Bus module: IMPLEMENTED / NOT VERIFIED.
+- State store: IMPLEMENTED / NOT VERIFIED.
+- Task manager: IMPLEMENTED / NOT VERIFIED.
+- Policy Engine: IMPLEMENTED / NOT VERIFIED.
+- UI render test: IMPLEMENTED / NOT VERIFIED.
 - Voice reactivity: NOT IMPLEMENTED.
-- Automation persistence, verification, hot reload, rollback: NOT IMPLEMENTED.
-- AUTO mode: disabled by default.
+- Builder E2E, audit, hot reload, rollback: NOT IMPLEMENTED.
